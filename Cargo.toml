@@ -1,0 +1,11 @@
+[package]
+name = "lazy-wrap"
+version = "0.1.0"
+description = "Lazily-initialised wrapper"
+edition = "2021"
+authors = ["Meadowsys"]
+repository = "https://github.com/Meadowsys/lazy-wrap.git"
+license = "MIT"
+
+[dependencies]
+parking_lot = "0.12.1"
