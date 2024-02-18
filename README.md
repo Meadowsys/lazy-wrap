@@ -5,7 +5,7 @@ Smol wrapper around a type with an attached initialisation function. On first ac
 You can create this in a `static` variable. This would look something like:
 
 ```rs
-static STATIC_STRING: LazyWrap<String> = LazyWrap::new(&|| {
+static STATIC_STRING: LazyWrap<String> = LazyWrap::new(|| {
    // do whatever
    "hallo!!!".into()
 });
