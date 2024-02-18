@@ -2,6 +2,7 @@ use ::parking_lot::Once;
 use ::std::cell::UnsafeCell;
 use ::std::mem::MaybeUninit;
 use ::std::ops::{ Deref, DerefMut };
+use ::std::panic::{ RefUnwindSafe, UnwindSafe };
 
 pub struct LazyWrap<T, F = &'static dyn Fn() -> T> {
 	value: UnsafeCell<MaybeUninit<T>>,
@@ -56,8 +57,37 @@ where
 	}
 }
 
+impl<T, U, F> AsRef<U> for LazyWrap<T, F>
+where
+	F: Fn() -> T,
+	T: AsRef<U>,
+	U: ?Sized
+{
+	#[inline]
+	fn as_ref(&self) -> &U {
+		// ensure_initialised called by Deref
+		(**self).as_ref()
+	}
+}
+
+impl<T, U, F> AsMut<U> for LazyWrap<T, F>
+where
+	F: Fn() -> T,
+	T: AsMut<U>,
+	U: ?Sized
+{
+	#[inline]
+	fn as_mut(&mut self) -> &mut U {
+		// ensure_initialised called by DerefMut
+		(**self).as_mut()
+	}
+}
+
 unsafe impl<T, F> Send for LazyWrap<T, F> where T: Send {}
 unsafe impl<T, F> Sync for LazyWrap<T, F> where T: Sync {}
+impl<T, F> UnwindSafe for LazyWrap<T, F> where T: UnwindSafe {}
+impl<T, F> RefUnwindSafe for LazyWrap<T, F> where T: RefUnwindSafe {}
+impl<T, F> Unpin for LazyWrap<T, F> where T: Unpin {}
 
 impl<T, F> Drop for LazyWrap<T, F> {
 	#[inline]
