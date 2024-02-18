@@ -9,21 +9,12 @@ pub struct LazyWrap<T, F = &'static dyn Fn() -> T> {
 	once: Once
 }
 
-impl<T> LazyWrap<T> {
-	#[inline]
-	pub const fn const_new(init: &'static dyn Fn() -> T) -> Self {
-		let value = UnsafeCell::new(MaybeUninit::uninit());
-		let once = Once::new();
-		Self { value, init, once }
-	}
-}
-
 impl<T, F> LazyWrap<T, F>
 where
 	F: Fn() -> T
 {
 	#[inline]
-	pub fn new(init: F) -> Self {
+	pub const fn new(init: F) -> Self {
 		let value = UnsafeCell::new(MaybeUninit::uninit());
 		let once = Once::new();
 		Self { value, init, once }
