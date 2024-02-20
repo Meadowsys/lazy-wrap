@@ -74,9 +74,11 @@ where
 		let data = unsafe { ptr::read(this.data.get()) };
 
 		if initialised {
-			LazyWrapState::Initialised(ManuallyDrop::into_inner(unsafe { data.value }))
+			let value = ManuallyDrop::into_inner(unsafe { data.value });
+			LazyWrapState::Initialised(value)
 		} else {
-			LazyWrapState::Uninitialised(ManuallyDrop::into_inner(unsafe { data.init }))
+			let init = ManuallyDrop::into_inner(unsafe { data.init });
+			LazyWrapState::Uninitialised(init)
 		}
 	}
 
