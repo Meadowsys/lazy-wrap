@@ -137,11 +137,11 @@ where
 	}
 }
 
-unsafe impl<T, F> Send for LazyWrap<T, F> where T: Send {}
+unsafe impl<T, F> Send for LazyWrap<T, F> where T: Send, F: Send {}
 unsafe impl<T, F> Sync for LazyWrap<T, F> where T: Sync {}
-impl<T, F> UnwindSafe for LazyWrap<T, F> where T: UnwindSafe {}
+impl<T, F> UnwindSafe for LazyWrap<T, F> where T: UnwindSafe, F: UnwindSafe {}
 impl<T, F> RefUnwindSafe for LazyWrap<T, F> where T: RefUnwindSafe {}
-impl<T, F> Unpin for LazyWrap<T, F> where T: Unpin {}
+impl<T, F> Unpin for LazyWrap<T, F> where T: Unpin, F: Unpin {}
 
 impl<T, F> Drop for LazyWrap<T, F> {
 	fn drop(&mut self) {
