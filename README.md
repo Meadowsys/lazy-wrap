@@ -13,4 +13,4 @@ static STATIC_STRING: LazyWrap<String> = LazyWrap::new(|| {
 });
 ```
 
-I've done my best, but its not tested for soundness, so use at your own risk. Please do file issues if you find any however, it would be very much appreciated c:
+I've done my best, but its not tested for soundness when used in multithreaded situations (singlethread is perfectly okay), so use at your own risk. Please do file issues if you find any however, it would be very much appreciated c:
